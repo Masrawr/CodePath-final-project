@@ -18,7 +18,7 @@ This final project (below) evolves that exercise into a full applied AI system.
 
 This project began as **Game Glitch Investigator** — a Module 1 exercise where I debugged a deliberately broken Streamlit number-guessing game (the secret number reset on every click, the higher/lower hints were inverted, out-of-range guesses were accepted, and the "New Game" button did nothing). I found and fixed those bugs by hand, using AI as a coding assistant.
 
-**Glitch Investigator AI** flips that exercise into a product: instead of *me* debugging with AI's help, the AI does the investigating. You paste a Python snippet (the original buggy game is the flagship demo), and the system retrieves relevant bug patterns, uses Claude to produce a structured bug report, tags each bug with a fine-tuned classifier, and then verifies its own suggested fixes by re-running the tests. It matters because it turns a throwaway learning exercise into a genuinely useful tool — automated, explainable debugging — while demonstrating retrieval, reasoning, a specialized model, and agentic self-checking end to end.
+**Glitch Investigator AI** flips that exercise into a product: instead of *me* debugging with AI's help, the AI does the investigating. You paste a Python snippet (the original buggy game is the flagship demo), and the system retrieves relevant bug patterns, uses Gemini to produce a structured bug report, tags each bug with a fine-tuned classifier, and then verifies its own suggested fixes by re-running the tests. It matters because it turns a throwaway learning exercise into a genuinely useful tool — automated, explainable debugging — while demonstrating retrieval, reasoning, a specialized model, and agentic self-checking end to end.
 
 ---
 
@@ -28,8 +28,8 @@ The full system diagram lives in [diagrams/ai_interactions.md](diagrams/ai_inter
 
 1. **Guardrails** — screens the input (rejects empty text, non-Python, and prompt-injection attempts) before anything reaches the AI.
 2. **Retriever (RAG)** — embeds the code and pulls the most relevant cards from a bug-pattern knowledge base ([kb/bug_patterns.md](kb/bug_patterns.md)), so the model reasons with concrete prior knowledge instead of guessing.
-3. **Detector (Claude)** — sends the code plus retrieved context to Claude and returns a *structured* bug report: line, category, explanation, and a suggested fix.
-4. **Classifier (fine-tuned model — advanced feature)** — a small DistilBERT/CodeBERT model, fine-tuned on a labeled dataset, independently tags each snippet's bug category. This gives a second, specialized signal to compare against Claude's.
+3. **Detector (Gemini)** — sends the code plus retrieved context to Gemini and returns a *structured* bug report: line, category, explanation, and a suggested fix.
+4. **Classifier (fine-tuned model — advanced feature)** — a small DistilBERT/CodeBERT model, fine-tuned on a labeled dataset, independently tags each snippet's bug category. This gives a second, specialized signal to compare against Gemini's.
 5. **Verifier (agentic loop)** — applies each suggested fix to a sandboxed copy of the code, re-runs `pytest`, and reports whether the bug is actually gone; if not, it loops back.
 
 The **checker components** (guardrails, verifier, evaluator, and a final human review) are where testing and people validate the AI's output — the system never trusts a single model pass blindly.
@@ -50,8 +50,8 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Set your Anthropic API key (used by the detector)
-export ANTHROPIC_API_KEY="your-key-here"
+# 4. Set your Gemini API key (used by the detector)
+export GEMINI_API_KEY="your-key-here"
 
 # 5. (Optional) Regenerate the training data and fine-tune the classifier
 python3 data/make_dataset.py                 # writes data/bugs.csv
@@ -120,7 +120,7 @@ instruction-override attempt. No analysis performed.
 - **Kept the original game as the demo target.** Rather than starting over, the buggy game is both the flagship input and the seed for the labeled dataset — the project reads as a genuine *evolution* of Module 1.
 - **RAG over a hand-written knowledge base**, not a huge scraped corpus. A small, curated set of bug-pattern cards is easy to explain and audit — a fair trade of breadth for trustworthiness on a student timeline.
 - **A local fine-tuned classifier over a hosted fine-tune API.** Owning the training loop lets me show a loss curve and confusion matrix and explain exactly what the model learned, and it runs offline with no per-call cost — at the price of a bit more setup.
-- **Two models on purpose.** Claude finds bugs broadly; the specialized classifier categorizes precisely. Comparing them surfaces disagreements instead of hiding them behind one confident answer.
+- **Two models on purpose.** Gemini finds bugs broadly; the specialized classifier categorizes precisely. Comparing them surfaces disagreements instead of hiding them behind one confident answer.
 - **The verifier actually runs the tests** instead of asking the LLM "did that work?" — grounding the agentic step in real execution rather than self-report.
 
 ---
@@ -128,8 +128,8 @@ instruction-override attempt. No analysis performed.
 ## Testing Summary
 
 - **What works:** the modular skeleton runs and imports cleanly, the knowledge base and bug taxonomy are in place, and the dataset builder produces controlled, labeled examples by injecting known bugs into clean code.
-- **What's in progress:** wiring the live Claude detector, loading the fine-tuned classifier, and closing the verify loop.
-- **Planned reliability experiments** ([tests/test_reliability.py](tests/test_reliability.py)): detection precision/recall on known-buggy vs. clean snippets, an agreement matrix between Claude and the classifier, run-to-run consistency, and guardrail tests for junk input and prompt injection.
+- **What's in progress:** wiring the live Gemini detector, loading the fine-tuned classifier, and closing the verify loop.
+- **Planned reliability experiments** ([tests/test_reliability.py](tests/test_reliability.py)): detection precision/recall on known-buggy vs. clean snippets, an agreement matrix between Gemini and the classifier, run-to-run consistency, and guardrail tests for junk input and prompt injection.
 - **What I learned so far:** grounding an "agent" in real test execution is far more convincing than trusting a model's self-assessment, and generating a labeled dataset by *injecting* known bugs is a fast, honest way to get controlled training and test data.
 
 ---

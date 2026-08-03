@@ -4,8 +4,8 @@ altair<5
 pytest
 
 # --- Glitch Investigator AI (final project) ---
-# Reasoning / detector (Claude)
-anthropic>=0.40.0
+# Reasoning / detector (Gemini)
+google-genai>=0.3.0
 
 # Retrieval (RAG)
 sentence-transformers>=2.2.0

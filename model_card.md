@@ -13,7 +13,7 @@ Investigator AI pipeline, not a single model.
 - **Intended users:** Students and developers learning to debug; not a substitute for professional code review or security auditing.
 - **Components:**
   - **Retriever (RAG)** — surfaces relevant bug-pattern cards from `kb/bug_patterns.md`.
-  - **Detector** — Claude (`claude-...`, fill in exact model id) produces a structured bug report.
+  - **Detector** — Gemini (`gemini-2.5-flash`; confirm exact model id) produces a structured bug report.
   - **Classifier (fine-tuned)** — DistilBERT/CodeBERT fine-tuned to tag a bug category.
   - **Verifier** — applies a suggested fix and re-runs `pytest` to confirm it.
   - **Guardrails** — screen input and output.
@@ -37,7 +37,7 @@ Investigator AI pipeline, not a single model.
 ## 3. How the AI Makes Decisions
 
 *Explain, in plain language, the path from input to output: input is screened by
-guardrails, relevant bug patterns are retrieved, Claude reasons over code + patterns to
+guardrails, relevant bug patterns are retrieved, Gemini reasons over code + patterns to
 produce findings, the fine-tuned classifier independently tags each finding's category,
 and the verifier confirms fixes by running tests. Note where the two models can disagree
 and how that disagreement is surfaced to the user.*
@@ -61,7 +61,7 @@ what you did instead.*
 ### System limitations
 *Be honest about what this system cannot do: e.g., it only handles short Python snippets;
 the classifier is trained on a small injected dataset so it may not generalize to unseen
-bug types; Claude can hallucinate a bug or a fix; the verifier only catches bugs that the
+bug types; Gemini can hallucinate a bug or a fix; the verifier only catches bugs that the
 existing tests cover; it is not a security tool.*
 
 ---
@@ -72,7 +72,7 @@ existing tests cover; it is not a security tool.*
 - **Output checks:** the verifier grounds suggested fixes in real test execution; a human
   reviews final findings before acting on them.
 - **Reliability experiments** (`tests/test_reliability.py`): detection precision/recall,
-  Claude-vs-classifier agreement, run-to-run consistency, and guardrail tests.
+  Gemini-vs-classifier agreement, run-to-run consistency, and guardrail tests.
   *Fill in results once run.*
 
 ---
@@ -83,4 +83,4 @@ existing tests cover; it is not a security tool.*
   presents explanations and confidence, and requires human review.
 - **False confidence:** a wrong-but-confident finding could mislead a beginner — mitigated
   by showing model disagreement and verifying fixes against tests.
-- **Data & privacy:** pasted code is sent to the Claude API; users should not paste secrets.
+- **Data & privacy:** pasted code is sent to the Gemini API; users should not paste secrets.

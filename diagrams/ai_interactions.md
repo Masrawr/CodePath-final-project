@@ -11,7 +11,7 @@ flowchart TD
     Retriever --> Agent
 
     subgraph Agent [🤖 Agent: plan → detect → fix → verify]
-        LLM[Claude detector<br/>structured bug report]
+        LLM[Gemini detector<br/>structured bug report]
         Clf[🎯 Fine-tuned classifier<br/>tags bug category]
         Verify[Verify loop<br/>apply fix + re-run pytest]
         LLM --> Clf --> Verify
