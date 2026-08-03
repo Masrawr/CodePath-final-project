@@ -1,0 +1,22 @@
+# --- Secrets (never commit your API key) ---
+.env
+.env.*
+*.key
+secrets.*
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# --- Model weights ---
+# The small scikit-learn model (model/classifier.joblib, ~6 KB) IS committed so
+# the app works right after clone. Ignore only large transformer weights, in
+# case a heavier model is ever added.
+model/*.safetensors
+model/*.bin
+
+# --- OS / editor cruft ---
+.DS_Store

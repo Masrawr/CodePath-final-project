@@ -7,12 +7,11 @@ pytest
 # Reasoning / detector (Gemini)
 google-genai>=0.3.0
 
-# Retrieval (RAG)
-sentence-transformers>=2.2.0
-faiss-cpu>=1.7.4
+# Retrieval (RAG) — pure-Python TF-IDF by default (numpy only).
+# sentence-transformers is an OPTIONAL semantic upgrade; uncomment to enable.
+numpy>=1.24.0
+# sentence-transformers>=2.2.0
 
-# Fine-tuned classifier (advanced feature) — used in Colab and to load the model
-transformers>=4.40.0
-torch>=2.0.0
+# Specialized classifier (advanced feature) — local scikit-learn model
 scikit-learn>=1.3.0
-pandas>=2.0.0
+joblib>=1.3.0

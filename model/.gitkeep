@@ -1,3 +1,4 @@
-# The fine-tuned classifier is saved here by notebooks/finetune.ipynb.
-# This folder is kept in git via .gitkeep; the model weights themselves are
-# typically too large to commit.
+# The specialized classifier (classifier.joblib) is saved here by
+# src/train_classifier.py. The trained model is small (~6 KB) and committed so
+# the app works right after clone; regenerate it any time with:
+#   python3 src/train_classifier.py

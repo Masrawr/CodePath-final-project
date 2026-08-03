@@ -13,7 +13,7 @@ flowchart TD
     subgraph Agent [🤖 Agent: plan → detect → fix → verify]
         LLM[Gemini detector<br/>structured bug report]
         Clf[🎯 Fine-tuned classifier<br/>tags bug category]
-        Verify[Verify loop<br/>apply fix + re-run pytest]
+        Verify[Verify loop<br/>apply fix + re-detect]
         LLM --> Clf --> Verify
         Verify -- not fixed --> LLM
     end
@@ -30,7 +30,7 @@ flowchart TD
     class Guard,Eval,Human,Verify check;
 ```
 
-**How to read it:** input flows left-to-right through a guardrail, retrieval, and an agentic detect→classify→verify loop; the **checker components** (amber) are where testing and humans validate the AI — the guardrail screens input, the self-verify loop re-runs `pytest`, the evaluator measures reliability, and a human reviews the final findings and feeds corrections back.
+**How to read it:** input flows left-to-right through a guardrail, retrieval, and an agentic detect→classify→verify loop; the **checker components** (amber) are where testing and humans validate the AI — the guardrail screens input, the self-verify loop re-runs the detector on the fixed code, the evaluator measures reliability, and a human reviews the final findings and feeds corrections back.
 
 ---
 

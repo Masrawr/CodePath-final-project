@@ -1,91 +1,79 @@
 """
-Classifier — the ADVANCED FEATURE: a fine-tuned / specialized model.
+Classifier — the ADVANCED FEATURE: a specialized model.
 
-A small DistilBERT classifier (trained by notebooks/finetune.ipynb on
-data/bugs.csv) that tags a code snippet with a bug category. It gives a second,
-specialized signal that we compare against Claude's category in the evaluator.
+A scikit-learn TF-IDF + LogisticRegression classifier, trained on data/bugs.csv
+to tag a code snippet with a bug category. It runs locally in the Streamlit app
+(no GPU, no external service) and gives a second, specialized signal that we
+compare against Gemini's category in the evaluator.
 
-Expected files in MODEL_DIR (produced by the notebook):
-    config.json, model.safetensors, tokenizer files, and labels.json
+Train it with:  python3 src/train_classifier.py   (writes model/classifier.joblib)
 
 Bug taxonomy:
     state_bug, logic_inverted, missing_validation, off_by_one, dead_control, clean
 """
 
-import json
 import os
+import re
 
 MODEL_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "model")
+MODEL_PATH = os.path.join(MODEL_DIR, "classifier.joblib")
 
-# Lazy singletons so the (large) model loads once, only when first needed.
-_model = None
-_tokenizer = None
-_labels = None
+# Lazy singleton so the model file is loaded once, only when first needed.
+_pipeline = None
 
 
 class ModelNotTrainedError(RuntimeError):
-    """Raised when classify() is called before a fine-tuned model exists."""
+    """Raised when classify() is called before the model has been trained."""
 
 
-def _is_trained(model_dir: str) -> bool:
-    """True if MODEL_DIR looks like it contains a saved fine-tuned model."""
-    has_weights = any(
-        os.path.exists(os.path.join(model_dir, f))
-        for f in ("model.safetensors", "pytorch_model.bin")
-    )
-    has_labels = os.path.exists(os.path.join(model_dir, "labels.json"))
-    return has_weights and has_labels
+def code_tokenizer(text: str) -> list[str]:
+    """Tokenize code for TF-IDF: split identifiers and lowercase.
+
+    `st.session_state` -> ['st', 'session', 'state']; `parseGuess` ->
+    ['parse', 'guess']. Defined at module scope so the fitted vectorizer that
+    references it can be pickled and reloaded.
+    """
+    text = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", text)  # split camelCase
+    raw = re.split(r"[^A-Za-z0-9]+", text)
+    return [t.lower() for t in raw if t]
 
 
-def load_model(model_dir: str = MODEL_DIR):
-    """Load the fine-tuned classifier, tokenizer, and label list (cached)."""
-    global _model, _tokenizer, _labels
-    if _model is not None:
-        return _model, _tokenizer, _labels
-
-    if not _is_trained(model_dir):
+def load_model(model_path: str = MODEL_PATH):
+    """Load the trained pipeline (cached). Raises ModelNotTrainedError if absent."""
+    global _pipeline
+    if _pipeline is not None:
+        return _pipeline
+    if not os.path.exists(model_path):
         raise ModelNotTrainedError(
-            f"No fine-tuned model found in '{model_dir}'. "
-            "Run notebooks/finetune.ipynb and unzip the result into model/."
+            f"No trained model at '{model_path}'. "
+            "Train it with: python3 src/train_classifier.py"
         )
-
-    # Imported here so the rest of the app doesn't require torch/transformers
-    # until the classifier is actually used.
-    import torch
-    from transformers import AutoModelForSequenceClassification, AutoTokenizer
-
-    _tokenizer = AutoTokenizer.from_pretrained(model_dir)
-    _model = AutoModelForSequenceClassification.from_pretrained(model_dir)
-    _model.eval()
-    with open(os.path.join(model_dir, "labels.json"), encoding="utf-8") as f:
-        _labels = json.load(f)
-    return _model, _tokenizer, _labels
+    import joblib
+    _pipeline = joblib.load(model_path)
+    return _pipeline
 
 
-def classify(snippet: str, model_dir: str = MODEL_DIR) -> tuple[str, float]:
+def classify(snippet: str, model_path: str = MODEL_PATH) -> tuple[str, float]:
     """
     Return (predicted_category, confidence) for a code snippet.
 
-    confidence is the softmax probability of the winning class in [0, 1].
-    Raises ModelNotTrainedError if no fine-tuned model is available yet.
+    confidence is the predicted-class probability in [0, 1].
+    Raises ModelNotTrainedError if the model has not been trained yet.
     """
-    # load_model() raises ModelNotTrainedError before any heavy import, so the
-    # "no model yet" path works even when torch isn't installed.
-    model, tokenizer, labels = load_model(model_dir)
-    import torch
-    inputs = tokenizer(
-        snippet, return_tensors="pt", truncation=True,
-        padding="max_length", max_length=128,
-    )
-    with torch.no_grad():
-        logits = model(**inputs).logits
-    probs = torch.softmax(logits, dim=-1)[0]
-    idx = int(torch.argmax(probs))
-    return labels[idx], float(probs[idx])
+    pipeline = load_model(model_path)
+    probs = pipeline.predict_proba([snippet])[0]
+    classes = pipeline.classes_
+    best = probs.argmax()
+    return str(classes[best]), float(probs[best])
 
 
 if __name__ == "__main__":
-    # Tiny smoke test (requires a trained model in model/).
+    # The saved model references src.classifier.code_tokenizer, so make the
+    # project root importable when running this file directly (the app and
+    # tests already import via `src.classifier`, so they don't need this).
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
     demo = (
         "def check_guess(guess, secret):\n"
         "    if guess > secret:\n"

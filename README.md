@@ -18,7 +18,7 @@ This final project (below) evolves that exercise into a full applied AI system.
 
 This project began as **Game Glitch Investigator** — a Module 1 exercise where I debugged a deliberately broken Streamlit number-guessing game (the secret number reset on every click, the higher/lower hints were inverted, out-of-range guesses were accepted, and the "New Game" button did nothing). I found and fixed those bugs by hand, using AI as a coding assistant.
 
-**Glitch Investigator AI** flips that exercise into a product: instead of *me* debugging with AI's help, the AI does the investigating. You paste a Python snippet (the original buggy game is the flagship demo), and the system retrieves relevant bug patterns, uses Gemini to produce a structured bug report, tags each bug with a fine-tuned classifier, and then verifies its own suggested fixes by re-running the tests. It matters because it turns a throwaway learning exercise into a genuinely useful tool — automated, explainable debugging — while demonstrating retrieval, reasoning, a specialized model, and agentic self-checking end to end.
+**Glitch Investigator AI** flips that exercise into a product: instead of *me* debugging with AI's help, the AI does the investigating. You paste a Python snippet (the original buggy game is the flagship demo), and the system retrieves relevant bug patterns, uses Gemini to produce a structured bug report, tags each bug with a specialized classifier, and then verifies its own suggested fixes by re-running the detector on the corrected code. It matters because it turns a throwaway learning exercise into a genuinely useful tool — automated, explainable debugging — while demonstrating retrieval, reasoning, a specialized model, and agentic self-checking end to end.
 
 ---
 
@@ -29,8 +29,8 @@ The full system diagram lives in [diagrams/ai_interactions.md](diagrams/ai_inter
 1. **Guardrails** — screens the input (rejects empty text, non-Python, and prompt-injection attempts) before anything reaches the AI.
 2. **Retriever (RAG)** — embeds the code and pulls the most relevant cards from a bug-pattern knowledge base ([kb/bug_patterns.md](kb/bug_patterns.md)), so the model reasons with concrete prior knowledge instead of guessing.
 3. **Detector (Gemini)** — sends the code plus retrieved context to Gemini and returns a *structured* bug report: line, category, explanation, and a suggested fix.
-4. **Classifier (fine-tuned model — advanced feature)** — a small DistilBERT/CodeBERT model, fine-tuned on a labeled dataset, independently tags each snippet's bug category. This gives a second, specialized signal to compare against Gemini's.
-5. **Verifier (agentic loop)** — applies each suggested fix to a sandboxed copy of the code, re-runs `pytest`, and reports whether the bug is actually gone; if not, it loops back.
+4. **Classifier (specialized model — advanced feature)** — a scikit-learn TF-IDF + LogisticRegression model, trained locally on a labeled dataset, independently tags each snippet's bug category. This gives a second, specialized signal to compare against Gemini's. Runs in the app with no GPU or external service.
+5. **Verifier (agentic loop)** — applies each suggested fix, syntax-checks it, then re-runs the detector on the corrected code and reports whether the bug is actually gone.
 
 The **checker components** (guardrails, verifier, evaluator, and a final human review) are where testing and people validate the AI's output — the system never trusts a single model pass blindly.
 
@@ -53,9 +53,9 @@ pip install -r requirements.txt
 # 4. Set your Gemini API key (used by the detector)
 export GEMINI_API_KEY="your-key-here"
 
-# 5. (Optional) Regenerate the training data and fine-tune the classifier
+# 5. (Optional) Regenerate the training data and train the classifier
 python3 data/make_dataset.py                 # writes data/bugs.csv
-#   then run notebooks/finetune.ipynb on Colab and place the model in model/
+python3 src/train_classifier.py              # writes model/classifier.joblib
 
 # 6. Run the app
 python3 -m streamlit run investigator.py
@@ -119,23 +119,23 @@ instruction-override attempt. No analysis performed.
 
 - **Kept the original game as the demo target.** Rather than starting over, the buggy game is both the flagship input and the seed for the labeled dataset — the project reads as a genuine *evolution* of Module 1.
 - **RAG over a hand-written knowledge base**, not a huge scraped corpus. A small, curated set of bug-pattern cards is easy to explain and audit — a fair trade of breadth for trustworthiness on a student timeline.
-- **A local fine-tuned classifier over a hosted fine-tune API.** Owning the training loop lets me show a loss curve and confusion matrix and explain exactly what the model learned, and it runs offline with no per-call cost — at the price of a bit more setup.
+- **A local scikit-learn classifier over a hosted or GPU-trained model.** A TF-IDF + LogisticRegression model trains in seconds on any laptop, runs inside the app with no GPU or external service, and its coefficients and confusion matrix are easy to explain — a fair trade of raw accuracy for simplicity and transparency on a student timeline.
 - **Two models on purpose.** Gemini finds bugs broadly; the specialized classifier categorizes precisely. Comparing them surfaces disagreements instead of hiding them behind one confident answer.
-- **The verifier actually runs the tests** instead of asking the LLM "did that work?" — grounding the agentic step in real execution rather than self-report.
+- **The verifier re-runs the detector on the fixed code** ("is the bug still there?") rather than trusting the LLM's own "did that work?" — a lightweight self-check, with a syntax guard so a fix that breaks the code is never accepted. (Trade-off: it grounds the check in the detector, not in executed tests.)
 
 ---
 
 ## Testing Summary
 
-- **What works:** the modular skeleton runs and imports cleanly, the knowledge base and bug taxonomy are in place, and the dataset builder produces controlled, labeled examples by injecting known bugs into clean code.
-- **What's in progress:** wiring the live Gemini detector, loading the fine-tuned classifier, and closing the verify loop.
-- **Planned reliability experiments** ([tests/test_reliability.py](tests/test_reliability.py)): detection precision/recall on known-buggy vs. clean snippets, an agreement matrix between Gemini and the classifier, run-to-run consistency, and guardrail tests for junk input and prompt injection.
-- **What I learned so far:** grounding an "agent" in real test execution is far more convincing than trusting a model's self-assessment, and generating a labeled dataset by *injecting* known bugs is a fast, honest way to get controlled training and test data.
+- **What works:** the full pipeline runs end to end — guardrails, RAG retrieval (recall@3 = 100% on the five bug types), the specialized classifier (**90% test accuracy**), the Gemini detector, and the re-detection verifier, all wired into the Streamlit app.
+- **What's weakest:** the classifier confuses *clean* comparison/score snippets with their buggy versions (they differ by one operator or number), so `clean` recall is the lowest class; TF-IDF matching can also mis-rank a retrieved pattern on a shared token.
+- **Reliability experiments** ([tests/test_reliability.py](tests/test_reliability.py)): guardrail tests pass; detection precision/recall, run-to-run consistency, and classifier-vs-detector agreement are measured by the experiment harness (results pasted into `model_card.md`).
+- **What I learned:** a labeled dataset built by *injecting* known bugs is a fast, honest way to get controlled training and test data, and a second, cheap specialized model is a useful cross-check on a general LLM's confident answers.
 
 ---
 
 ## Reflection
 
-Building this taught me to treat AI as one component in a checked pipeline rather than a single oracle — retrieval gives it context, a second specialized model challenges it, and real test execution verifies it. The harder part of the problem turned out to be *system design and evaluation*, not the model call itself.
+Building this taught me to treat AI as one component in a checked pipeline rather than a single oracle — retrieval gives it context, a second specialized model challenges it, and a re-detection pass verifies its fixes. The harder part of the problem turned out to be *system design and evaluation*, not the model call itself.
 
 > 📄 My full graded responsible-AI reflection — how I collaborated with AI, one helpful and one flawed AI suggestion, and the system's limitations — lives in [model_card.md](model_card.md).
