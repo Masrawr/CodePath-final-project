@@ -1,3 +1,18 @@
+# --- Original game (Module 1) ---
 streamlit>=1.21.0
 altair<5
 pytest
+
+# --- Glitch Investigator AI (final project) ---
+# Reasoning / detector (Claude)
+anthropic>=0.40.0
+
+# Retrieval (RAG)
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.4
+
+# Fine-tuned classifier (advanced feature) — used in Colab and to load the model
+transformers>=4.40.0
+torch>=2.0.0
+scikit-learn>=1.3.0
+pandas>=2.0.0

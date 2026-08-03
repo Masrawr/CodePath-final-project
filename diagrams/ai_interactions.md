@@ -1,5 +1,39 @@
 # AI Interactions Log
 
+## 🗺️ System Architecture — Glitch Investigator AI
+
+```mermaid
+flowchart TD
+    User([👤 User pastes Python code]) --> Guard{Guardrail:<br/>valid Python?}
+    Guard -- no --> Reject[Reject / ask again]
+    Guard -- yes --> Retriever[🔎 Retriever<br/>RAG over bug-pattern KB]
+
+    Retriever --> Agent
+
+    subgraph Agent [🤖 Agent: plan → detect → fix → verify]
+        LLM[Claude detector<br/>structured bug report]
+        Clf[🎯 Fine-tuned classifier<br/>tags bug category]
+        Verify[Verify loop<br/>apply fix + re-run pytest]
+        LLM --> Clf --> Verify
+        Verify -- not fixed --> LLM
+    end
+
+    Agent --> Eval[📊 Evaluator / Tester<br/>precision·recall, LLM-vs-classifier,<br/>consistency, guardrail tests]
+    Eval --> Output([📝 Bug report: line · category · fix · confidence])
+
+    Output --> Human{{👀 Human review:<br/>accept / reject findings}}
+    Human -. feedback .-> Retriever
+
+    classDef ai fill:#e8f0fe,stroke:#4285f4;
+    classDef check fill:#fef7e0,stroke:#f9ab00;
+    class Retriever,LLM,Clf,Agent ai;
+    class Guard,Eval,Human,Verify check;
+```
+
+**How to read it:** input flows left-to-right through a guardrail, retrieval, and an agentic detect→classify→verify loop; the **checker components** (amber) are where testing and humans validate the AI — the guardrail screens input, the self-verify loop re-runs `pytest`, the evaluator measures reliability, and a human reviews the final findings and feeds corrections back.
+
+---
+
 > **Stretch features only.** Only fill in the sections that apply to stretch features you attempted. If you did not attempt a stretch feature, leave its section blank or delete it. This file is not required for the core project.
 
 ---

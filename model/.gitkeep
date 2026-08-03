@@ -1,0 +1,3 @@
+# The fine-tuned classifier is saved here by notebooks/finetune.ipynb.
+# This folder is kept in git via .gitkeep; the model weights themselves are
+# typically too large to commit.
