@@ -1,6 +1,6 @@
 # 🎮 Original Project: Game Glitch Investigator
 
-*Game Glitch Investigator* was my Module 1 project: a Streamlit number-guessing game that an AI had "written" and left full of deliberate bugs. The secret number reset on every click, the higher/lower hints were inverted, out-of-range guesses were accepted, and the "New Game" button did nothing. My job was to play the game, hunt down those bugs, refactor the logic into a tested module, and get all the `pytest` cases passing — using AI as a debugging teammate rather than letting it do the work for me.
+*Game Glitch Investigator* was my Module 1 project: a Streamlit number-guessing game left full of deliberate bugs. The secret number reset on every click, the higher/lower hints were inverted, out-of-range guesses were accepted, and the "New Game" button did nothing. My job was to play the game, hunt down those bugs, refactor the logic into a tested module, and get all the `pytest` cases passing — using AI as a debugging teammate rather than letting it do the work for me.
 
 This final project (below) evolves that exercise into a full applied AI system.
 

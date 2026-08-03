@@ -1,0 +1,1706 @@
+snippet,label
+"def check_guess(guess, secret):
+    if guess == secret:
+        return 'Win'
+    if guess > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, secret):
+    if attempt == secret:
+        return 'Win'
+    if attempt > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, secret):
+    if value == secret:
+        return 'Win'
+    if value > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, secret):
+    if pick == secret:
+        return 'Win'
+    if pick > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, secret):
+    if choice == secret:
+        return 'Win'
+    if choice > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, secret):
+    if entry == secret:
+        return 'Win'
+    if entry > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, target):
+    if guess == target:
+        return 'Win'
+    if guess > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, target):
+    if attempt == target:
+        return 'Win'
+    if attempt > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, target):
+    if value == target:
+        return 'Win'
+    if value > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, target):
+    if pick == target:
+        return 'Win'
+    if pick > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, target):
+    if choice == target:
+        return 'Win'
+    if choice > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, target):
+    if entry == target:
+        return 'Win'
+    if entry > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, answer):
+    if guess == answer:
+        return 'Win'
+    if guess > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, answer):
+    if attempt == answer:
+        return 'Win'
+    if attempt > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, answer):
+    if value == answer:
+        return 'Win'
+    if value > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, answer):
+    if pick == answer:
+        return 'Win'
+    if pick > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, answer):
+    if choice == answer:
+        return 'Win'
+    if choice > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, answer):
+    if entry == answer:
+        return 'Win'
+    if entry > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, number):
+    if guess == number:
+        return 'Win'
+    if guess > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, number):
+    if attempt == number:
+        return 'Win'
+    if attempt > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, number):
+    if value == number:
+        return 'Win'
+    if value > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, number):
+    if pick == number:
+        return 'Win'
+    if pick > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, number):
+    if choice == number:
+        return 'Win'
+    if choice > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, number):
+    if entry == number:
+        return 'Win'
+    if entry > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, code):
+    if guess == code:
+        return 'Win'
+    if guess > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, code):
+    if attempt == code:
+        return 'Win'
+    if attempt > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, code):
+    if value == code:
+        return 'Win'
+    if value > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, code):
+    if pick == code:
+        return 'Win'
+    if pick > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, code):
+    if choice == code:
+        return 'Win'
+    if choice > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, code):
+    if entry == code:
+        return 'Win'
+    if entry > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, hidden):
+    if guess == hidden:
+        return 'Win'
+    if guess > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, hidden):
+    if attempt == hidden:
+        return 'Win'
+    if attempt > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, hidden):
+    if value == hidden:
+        return 'Win'
+    if value > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, hidden):
+    if pick == hidden:
+        return 'Win'
+    if pick > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, hidden):
+    if choice == hidden:
+        return 'Win'
+    if choice > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, hidden):
+    if entry == hidden:
+        return 'Win'
+    if entry > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, secret):
+    if guess == secret:
+        return 'Win'
+    if guess > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, secret):
+    if attempt == secret:
+        return 'Win'
+    if attempt > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, secret):
+    if value == secret:
+        return 'Win'
+    if value > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, secret):
+    if pick == secret:
+        return 'Win'
+    if pick > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, secret):
+    if choice == secret:
+        return 'Win'
+    if choice > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, secret):
+    if entry == secret:
+        return 'Win'
+    if entry > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, target):
+    if guess == target:
+        return 'Win'
+    if guess > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, target):
+    if attempt == target:
+        return 'Win'
+    if attempt > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, target):
+    if value == target:
+        return 'Win'
+    if value > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, target):
+    if pick == target:
+        return 'Win'
+    if pick > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, target):
+    if choice == target:
+        return 'Win'
+    if choice > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, target):
+    if entry == target:
+        return 'Win'
+    if entry > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, answer):
+    if guess == answer:
+        return 'Win'
+    if guess > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, answer):
+    if attempt == answer:
+        return 'Win'
+    if attempt > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, answer):
+    if value == answer:
+        return 'Win'
+    if value > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, answer):
+    if pick == answer:
+        return 'Win'
+    if pick > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, answer):
+    if choice == answer:
+        return 'Win'
+    if choice > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, answer):
+    if entry == answer:
+        return 'Win'
+    if entry > answer:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, number):
+    if guess == number:
+        return 'Win'
+    if guess > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, number):
+    if attempt == number:
+        return 'Win'
+    if attempt > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, number):
+    if value == number:
+        return 'Win'
+    if value > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, number):
+    if pick == number:
+        return 'Win'
+    if pick > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, number):
+    if choice == number:
+        return 'Win'
+    if choice > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, number):
+    if entry == number:
+        return 'Win'
+    if entry > number:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, code):
+    if guess == code:
+        return 'Win'
+    if guess > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, code):
+    if attempt == code:
+        return 'Win'
+    if attempt > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, code):
+    if value == code:
+        return 'Win'
+    if value > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, code):
+    if pick == code:
+        return 'Win'
+    if pick > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, code):
+    if choice == code:
+        return 'Win'
+    if choice > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, code):
+    if entry == code:
+        return 'Win'
+    if entry > code:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, hidden):
+    if guess == hidden:
+        return 'Win'
+    if guess > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, hidden):
+    if attempt == hidden:
+        return 'Win'
+    if attempt > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, hidden):
+    if value == hidden:
+        return 'Win'
+    if value > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, hidden):
+    if pick == hidden:
+        return 'Win'
+    if pick > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, hidden):
+    if choice == hidden:
+        return 'Win'
+    if choice > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, hidden):
+    if entry == hidden:
+        return 'Win'
+    if entry > hidden:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, secret):
+    if guess == secret:
+        return 'Win'
+    if guess > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, secret):
+    if attempt == secret:
+        return 'Win'
+    if attempt > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(value, secret):
+    if value == secret:
+        return 'Win'
+    if value > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(pick, secret):
+    if pick == secret:
+        return 'Win'
+    if pick > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(choice, secret):
+    if choice == secret:
+        return 'Win'
+    if choice > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(entry, secret):
+    if entry == secret:
+        return 'Win'
+    if entry > secret:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(guess, target):
+    if guess == target:
+        return 'Win'
+    if guess > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def check_guess(attempt, target):
+    if attempt == target:
+        return 'Win'
+    if attempt > target:
+        return 'Too Low'
+    return 'Too High'",logic_inverted
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_choice(raw):
+    choice = int(raw)
+    return choice",missing_validation
+"def parse_choice(raw):
+    choice = int(raw)
+    return choice",missing_validation
+"def parse_choice(raw):
+    choice = int(raw)
+    return choice",missing_validation
+"def parse_choice(raw):
+    choice = int(raw)
+    return choice",missing_validation
+"def parse_choice(raw):
+    choice = int(raw)
+    return choice",missing_validation
+"def parse_choice(raw):
+    choice = int(raw)
+    return choice",missing_validation
+"def parse_choice(raw):
+    choice = int(raw)
+    return choice",missing_validation
+"def parse_choice(raw):
+    choice = int(raw)
+    return choice",missing_validation
+"def parse_entry(raw):
+    entry = int(raw)
+    return entry",missing_validation
+"def parse_entry(raw):
+    entry = int(raw)
+    return entry",missing_validation
+"def parse_entry(raw):
+    entry = int(raw)
+    return entry",missing_validation
+"def parse_entry(raw):
+    entry = int(raw)
+    return entry",missing_validation
+"def parse_entry(raw):
+    entry = int(raw)
+    return entry",missing_validation
+"def parse_entry(raw):
+    entry = int(raw)
+    return entry",missing_validation
+"def parse_entry(raw):
+    entry = int(raw)
+    return entry",missing_validation
+"def parse_entry(raw):
+    entry = int(raw)
+    return entry",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_guess(raw):
+    guess = int(raw)
+    return guess",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_attempt(raw):
+    attempt = int(raw)
+    return attempt",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_value(raw):
+    value = int(raw)
+    return value",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def parse_pick(raw):
+    pick = int(raw)
+    return pick",missing_validation
+"def show(items):
+    for i in range(len(items) + 1):
+        print(items[i])",off_by_one
+"def score(guesss):
+    points = 100 - 10 * (guesss + 1)
+    return max(points, 10)",off_by_one
+"def show(rows):
+    for i in range(len(rows) + 1):
+        print(rows[i])",off_by_one
+"def score(attempts):
+    points = 100 - 10 * (attempts + 1)
+    return max(points, 10)",off_by_one
+"def show(cards):
+    for i in range(len(cards) + 1):
+        print(cards[i])",off_by_one
+"def score(values):
+    points = 100 - 10 * (values + 1)
+    return max(points, 10)",off_by_one
+"def show(scores):
+    for i in range(len(scores) + 1):
+        print(scores[i])",off_by_one
+"def score(picks):
+    points = 100 - 10 * (picks + 1)
+    return max(points, 10)",off_by_one
+"def show(names):
+    for i in range(len(names) + 1):
+        print(names[i])",off_by_one
+"def score(choices):
+    points = 100 - 10 * (choices + 1)
+    return max(points, 10)",off_by_one
+"def show(items):
+    for i in range(len(items) + 1):
+        print(items[i])",off_by_one
+"def score(entrys):
+    points = 100 - 10 * (entrys + 1)
+    return max(points, 10)",off_by_one
+"def show(rows):
+    for i in range(len(rows) + 1):
+        print(rows[i])",off_by_one
+"def score(guesss):
+    points = 100 - 10 * (guesss + 1)
+    return max(points, 10)",off_by_one
+"def show(cards):
+    for i in range(len(cards) + 1):
+        print(cards[i])",off_by_one
+"def score(attempts):
+    points = 100 - 10 * (attempts + 1)
+    return max(points, 10)",off_by_one
+"def show(scores):
+    for i in range(len(scores) + 1):
+        print(scores[i])",off_by_one
+"def score(values):
+    points = 100 - 10 * (values + 1)
+    return max(points, 10)",off_by_one
+"def show(names):
+    for i in range(len(names) + 1):
+        print(names[i])",off_by_one
+"def score(picks):
+    points = 100 - 10 * (picks + 1)
+    return max(points, 10)",off_by_one
+"def show(items):
+    for i in range(len(items) + 1):
+        print(items[i])",off_by_one
+"def score(choices):
+    points = 100 - 10 * (choices + 1)
+    return max(points, 10)",off_by_one
+"def show(rows):
+    for i in range(len(rows) + 1):
+        print(rows[i])",off_by_one
+"def score(entrys):
+    points = 100 - 10 * (entrys + 1)
+    return max(points, 10)",off_by_one
+"def show(cards):
+    for i in range(len(cards) + 1):
+        print(cards[i])",off_by_one
+"def score(guesss):
+    points = 100 - 10 * (guesss + 1)
+    return max(points, 10)",off_by_one
+"def show(scores):
+    for i in range(len(scores) + 1):
+        print(scores[i])",off_by_one
+"def score(attempts):
+    points = 100 - 10 * (attempts + 1)
+    return max(points, 10)",off_by_one
+"def show(names):
+    for i in range(len(names) + 1):
+        print(names[i])",off_by_one
+"def score(values):
+    points = 100 - 10 * (values + 1)
+    return max(points, 10)",off_by_one
+"def show(items):
+    for i in range(len(items) + 1):
+        print(items[i])",off_by_one
+"def score(picks):
+    points = 100 - 10 * (picks + 1)
+    return max(points, 10)",off_by_one
+"def show(rows):
+    for i in range(len(rows) + 1):
+        print(rows[i])",off_by_one
+"def score(choices):
+    points = 100 - 10 * (choices + 1)
+    return max(points, 10)",off_by_one
+"def show(cards):
+    for i in range(len(cards) + 1):
+        print(cards[i])",off_by_one
+"def score(entrys):
+    points = 100 - 10 * (entrys + 1)
+    return max(points, 10)",off_by_one
+"def show(scores):
+    for i in range(len(scores) + 1):
+        print(scores[i])",off_by_one
+"def score(guesss):
+    points = 100 - 10 * (guesss + 1)
+    return max(points, 10)",off_by_one
+"def show(names):
+    for i in range(len(names) + 1):
+        print(names[i])",off_by_one
+"def score(attempts):
+    points = 100 - 10 * (attempts + 1)
+    return max(points, 10)",off_by_one
+"def show(items):
+    for i in range(len(items) + 1):
+        print(items[i])",off_by_one
+"def score(values):
+    points = 100 - 10 * (values + 1)
+    return max(points, 10)",off_by_one
+"def show(rows):
+    for i in range(len(rows) + 1):
+        print(rows[i])",off_by_one
+"def score(picks):
+    points = 100 - 10 * (picks + 1)
+    return max(points, 10)",off_by_one
+"def show(cards):
+    for i in range(len(cards) + 1):
+        print(cards[i])",off_by_one
+"def score(choices):
+    points = 100 - 10 * (choices + 1)
+    return max(points, 10)",off_by_one
+"def show(scores):
+    for i in range(len(scores) + 1):
+        print(scores[i])",off_by_one
+"def score(entrys):
+    points = 100 - 10 * (entrys + 1)
+    return max(points, 10)",off_by_one
+"def show(names):
+    for i in range(len(names) + 1):
+        print(names[i])",off_by_one
+"def score(guesss):
+    points = 100 - 10 * (guesss + 1)
+    return max(points, 10)",off_by_one
+"def show(items):
+    for i in range(len(items) + 1):
+        print(items[i])",off_by_one
+"def score(attempts):
+    points = 100 - 10 * (attempts + 1)
+    return max(points, 10)",off_by_one
+"def show(rows):
+    for i in range(len(rows) + 1):
+        print(rows[i])",off_by_one
+"def score(values):
+    points = 100 - 10 * (values + 1)
+    return max(points, 10)",off_by_one
+"def show(cards):
+    for i in range(len(cards) + 1):
+        print(cards[i])",off_by_one
+"def score(picks):
+    points = 100 - 10 * (picks + 1)
+    return max(points, 10)",off_by_one
+"def show(scores):
+    for i in range(len(scores) + 1):
+        print(scores[i])",off_by_one
+"def score(choices):
+    points = 100 - 10 * (choices + 1)
+    return max(points, 10)",off_by_one
+"def show(names):
+    for i in range(len(names) + 1):
+        print(names[i])",off_by_one
+"def score(entrys):
+    points = 100 - 10 * (entrys + 1)
+    return max(points, 10)",off_by_one
+"def show(items):
+    for i in range(len(items) + 1):
+        print(items[i])",off_by_one
+"def score(guesss):
+    points = 100 - 10 * (guesss + 1)
+    return max(points, 10)",off_by_one
+"def show(rows):
+    for i in range(len(rows) + 1):
+        print(rows[i])",off_by_one
+"def score(attempts):
+    points = 100 - 10 * (attempts + 1)
+    return max(points, 10)",off_by_one
+"def show(cards):
+    for i in range(len(cards) + 1):
+        print(cards[i])",off_by_one
+"def score(values):
+    points = 100 - 10 * (values + 1)
+    return max(points, 10)",off_by_one
+"def show(scores):
+    for i in range(len(scores) + 1):
+        print(scores[i])",off_by_one
+"def score(picks):
+    points = 100 - 10 * (picks + 1)
+    return max(points, 10)",off_by_one
+"def show(names):
+    for i in range(len(names) + 1):
+        print(names[i])",off_by_one
+"def score(choices):
+    points = 100 - 10 * (choices + 1)
+    return max(points, 10)",off_by_one
+"def show(items):
+    for i in range(len(items) + 1):
+        print(items[i])",off_by_one
+"def score(entrys):
+    points = 100 - 10 * (entrys + 1)
+    return max(points, 10)",off_by_one
+"def show(rows):
+    for i in range(len(rows) + 1):
+        print(rows[i])",off_by_one
+"def score(guesss):
+    points = 100 - 10 * (guesss + 1)
+    return max(points, 10)",off_by_one
+"def show(cards):
+    for i in range(len(cards) + 1):
+        print(cards[i])",off_by_one
+"def score(attempts):
+    points = 100 - 10 * (attempts + 1)
+    return max(points, 10)",off_by_one
+"def show(scores):
+    for i in range(len(scores) + 1):
+        print(scores[i])",off_by_one
+"def score(values):
+    points = 100 - 10 * (values + 1)
+    return max(points, 10)",off_by_one
+"def show(names):
+    for i in range(len(names) + 1):
+        print(names[i])",off_by_one
+"def score(picks):
+    points = 100 - 10 * (picks + 1)
+    return max(points, 10)",off_by_one
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 10)
+secret = random.randint(0, 10)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 20)
+secret = random.randint(0, 20)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 50)
+secret = random.randint(0, 50)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 100)
+secret = random.randint(0, 100)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 10)
+secret = random.randint(1, 10)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 20)
+secret = random.randint(1, 20)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 50)
+secret = random.randint(1, 50)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 100)
+secret = random.randint(1, 100)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 10)
+target = random.randint(0, 10)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 20)
+target = random.randint(0, 20)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 50)
+target = random.randint(0, 50)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 100)
+target = random.randint(0, 100)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 10)
+target = random.randint(1, 10)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 20)
+target = random.randint(1, 20)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 50)
+target = random.randint(1, 50)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 100)
+target = random.randint(1, 100)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 10)
+answer = random.randint(0, 10)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 20)
+answer = random.randint(0, 20)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 50)
+answer = random.randint(0, 50)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 100)
+answer = random.randint(0, 100)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(1, 10)
+answer = random.randint(1, 10)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(1, 20)
+answer = random.randint(1, 20)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(1, 50)
+answer = random.randint(1, 50)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(1, 100)
+answer = random.randint(1, 100)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(0, 10)
+number = random.randint(0, 10)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(0, 20)
+number = random.randint(0, 20)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(0, 50)
+number = random.randint(0, 50)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(0, 100)
+number = random.randint(0, 100)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(1, 10)
+number = random.randint(1, 10)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(1, 20)
+number = random.randint(1, 20)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(1, 50)
+number = random.randint(1, 50)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(1, 100)
+number = random.randint(1, 100)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 10)
+secret = random.randint(0, 10)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 20)
+secret = random.randint(0, 20)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 50)
+secret = random.randint(0, 50)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 100)
+secret = random.randint(0, 100)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 10)
+secret = random.randint(1, 10)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 20)
+secret = random.randint(1, 20)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 50)
+secret = random.randint(1, 50)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 100)
+secret = random.randint(1, 100)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 10)
+target = random.randint(0, 10)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 20)
+target = random.randint(0, 20)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 50)
+target = random.randint(0, 50)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 100)
+target = random.randint(0, 100)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 10)
+target = random.randint(1, 10)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 20)
+target = random.randint(1, 20)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 50)
+target = random.randint(1, 50)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 100)
+target = random.randint(1, 100)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 10)
+answer = random.randint(0, 10)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 20)
+answer = random.randint(0, 20)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 50)
+answer = random.randint(0, 50)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 100)
+answer = random.randint(0, 100)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(1, 10)
+answer = random.randint(1, 10)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(1, 20)
+answer = random.randint(1, 20)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(1, 50)
+answer = random.randint(1, 50)",state_bug
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(1, 100)
+answer = random.randint(1, 100)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(0, 10)
+number = random.randint(0, 10)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(0, 20)
+number = random.randint(0, 20)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(0, 50)
+number = random.randint(0, 50)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(0, 100)
+number = random.randint(0, 100)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(1, 10)
+number = random.randint(1, 10)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(1, 20)
+number = random.randint(1, 20)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(1, 50)
+number = random.randint(1, 50)",state_bug
+"if 'number' not in st.session_state:
+    st.session_state.number = random.randint(1, 100)
+number = random.randint(1, 100)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 10)
+secret = random.randint(0, 10)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 20)
+secret = random.randint(0, 20)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 50)
+secret = random.randint(0, 50)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 100)
+secret = random.randint(0, 100)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 10)
+secret = random.randint(1, 10)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 20)
+secret = random.randint(1, 20)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 50)
+secret = random.randint(1, 50)",state_bug
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 100)
+secret = random.randint(1, 100)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 10)
+target = random.randint(0, 10)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 20)
+target = random.randint(0, 20)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 50)
+target = random.randint(0, 50)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 100)
+target = random.randint(0, 100)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 10)
+target = random.randint(1, 10)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 20)
+target = random.randint(1, 20)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 50)
+target = random.randint(1, 50)",state_bug
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 100)
+target = random.randint(1, 100)",state_bug
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"if st.button('New Game'):
+    pass",dead_control
+"def check_guess(guess, secret):
+    if guess == secret:
+        return 'Win'
+    if guess > secret:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_guess(raw):
+    guess = int(raw)
+    if guess < 0 or guess > 10:
+        return None
+    return guess",clean
+"def show(items):
+    for i in range(len(items)):
+        print(items[i])",clean
+"def score(guesss):
+    points = 100 - 10 * guesss
+    return max(points, 10)",clean
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 10)
+secret = st.session_state.secret",clean
+"if st.button('New Game'):
+    st.session_state.secret = 'playing'
+    st.rerun()",clean
+"def check_guess(attempt, secret):
+    if attempt == secret:
+        return 'Win'
+    if attempt > secret:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_guess(raw):
+    guess = int(raw)
+    if guess < 0 or guess > 20:
+        return None
+    return guess",clean
+"def show(rows):
+    for i in range(len(rows)):
+        print(rows[i])",clean
+"def score(attempts):
+    points = 100 - 10 * attempts
+    return max(points, 10)",clean
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 20)
+secret = st.session_state.secret",clean
+"if st.button('New Game'):
+    st.session_state.target = 'playing'
+    st.rerun()",clean
+"def check_guess(value, secret):
+    if value == secret:
+        return 'Win'
+    if value > secret:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_guess(raw):
+    guess = int(raw)
+    if guess < 0 or guess > 50:
+        return None
+    return guess",clean
+"def show(cards):
+    for i in range(len(cards)):
+        print(cards[i])",clean
+"def score(values):
+    points = 100 - 10 * values
+    return max(points, 10)",clean
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 50)
+secret = st.session_state.secret",clean
+"if st.button('New Game'):
+    st.session_state.answer = 'playing'
+    st.rerun()",clean
+"def check_guess(pick, secret):
+    if pick == secret:
+        return 'Win'
+    if pick > secret:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_guess(raw):
+    guess = int(raw)
+    if guess < 0 or guess > 100:
+        return None
+    return guess",clean
+"def show(scores):
+    for i in range(len(scores)):
+        print(scores[i])",clean
+"def score(picks):
+    points = 100 - 10 * picks
+    return max(points, 10)",clean
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(0, 100)
+secret = st.session_state.secret",clean
+"if st.button('New Game'):
+    st.session_state.number = 'playing'
+    st.rerun()",clean
+"def check_guess(choice, secret):
+    if choice == secret:
+        return 'Win'
+    if choice > secret:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_guess(raw):
+    guess = int(raw)
+    if guess < 1 or guess > 10:
+        return None
+    return guess",clean
+"def show(names):
+    for i in range(len(names)):
+        print(names[i])",clean
+"def score(choices):
+    points = 100 - 10 * choices
+    return max(points, 10)",clean
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 10)
+secret = st.session_state.secret",clean
+"if st.button('New Game'):
+    st.session_state.status = 'playing'
+    st.rerun()",clean
+"def check_guess(entry, secret):
+    if entry == secret:
+        return 'Win'
+    if entry > secret:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_guess(raw):
+    guess = int(raw)
+    if guess < 1 or guess > 20:
+        return None
+    return guess",clean
+"def score(entrys):
+    points = 100 - 10 * entrys
+    return max(points, 10)",clean
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 20)
+secret = st.session_state.secret",clean
+"if st.button('New Game'):
+    st.session_state.score = 'playing'
+    st.rerun()",clean
+"def check_guess(guess, target):
+    if guess == target:
+        return 'Win'
+    if guess > target:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_guess(raw):
+    guess = int(raw)
+    if guess < 1 or guess > 50:
+        return None
+    return guess",clean
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 50)
+secret = st.session_state.secret",clean
+"if st.button('New Game'):
+    st.session_state.attempts = 'playing'
+    st.rerun()",clean
+"def check_guess(attempt, target):
+    if attempt == target:
+        return 'Win'
+    if attempt > target:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_guess(raw):
+    guess = int(raw)
+    if guess < 1 or guess > 100:
+        return None
+    return guess",clean
+"if 'secret' not in st.session_state:
+    st.session_state.secret = random.randint(1, 100)
+secret = st.session_state.secret",clean
+"def check_guess(value, target):
+    if value == target:
+        return 'Win'
+    if value > target:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_attempt(raw):
+    attempt = int(raw)
+    if attempt < 0 or attempt > 10:
+        return None
+    return attempt",clean
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 10)
+target = st.session_state.target",clean
+"def check_guess(pick, target):
+    if pick == target:
+        return 'Win'
+    if pick > target:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_attempt(raw):
+    attempt = int(raw)
+    if attempt < 0 or attempt > 20:
+        return None
+    return attempt",clean
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 20)
+target = st.session_state.target",clean
+"def check_guess(choice, target):
+    if choice == target:
+        return 'Win'
+    if choice > target:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_attempt(raw):
+    attempt = int(raw)
+    if attempt < 0 or attempt > 50:
+        return None
+    return attempt",clean
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 50)
+target = st.session_state.target",clean
+"def check_guess(entry, target):
+    if entry == target:
+        return 'Win'
+    if entry > target:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_attempt(raw):
+    attempt = int(raw)
+    if attempt < 0 or attempt > 100:
+        return None
+    return attempt",clean
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(0, 100)
+target = st.session_state.target",clean
+"def check_guess(guess, answer):
+    if guess == answer:
+        return 'Win'
+    if guess > answer:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_attempt(raw):
+    attempt = int(raw)
+    if attempt < 1 or attempt > 10:
+        return None
+    return attempt",clean
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 10)
+target = st.session_state.target",clean
+"def check_guess(attempt, answer):
+    if attempt == answer:
+        return 'Win'
+    if attempt > answer:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_attempt(raw):
+    attempt = int(raw)
+    if attempt < 1 or attempt > 20:
+        return None
+    return attempt",clean
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 20)
+target = st.session_state.target",clean
+"def check_guess(value, answer):
+    if value == answer:
+        return 'Win'
+    if value > answer:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_attempt(raw):
+    attempt = int(raw)
+    if attempt < 1 or attempt > 50:
+        return None
+    return attempt",clean
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 50)
+target = st.session_state.target",clean
+"def check_guess(pick, answer):
+    if pick == answer:
+        return 'Win'
+    if pick > answer:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_attempt(raw):
+    attempt = int(raw)
+    if attempt < 1 or attempt > 100:
+        return None
+    return attempt",clean
+"if 'target' not in st.session_state:
+    st.session_state.target = random.randint(1, 100)
+target = st.session_state.target",clean
+"def check_guess(choice, answer):
+    if choice == answer:
+        return 'Win'
+    if choice > answer:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_value(raw):
+    value = int(raw)
+    if value < 0 or value > 10:
+        return None
+    return value",clean
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 10)
+answer = st.session_state.answer",clean
+"def check_guess(entry, answer):
+    if entry == answer:
+        return 'Win'
+    if entry > answer:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_value(raw):
+    value = int(raw)
+    if value < 0 or value > 20:
+        return None
+    return value",clean
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 20)
+answer = st.session_state.answer",clean
+"def check_guess(guess, number):
+    if guess == number:
+        return 'Win'
+    if guess > number:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_value(raw):
+    value = int(raw)
+    if value < 0 or value > 50:
+        return None
+    return value",clean
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 50)
+answer = st.session_state.answer",clean
+"def check_guess(attempt, number):
+    if attempt == number:
+        return 'Win'
+    if attempt > number:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_value(raw):
+    value = int(raw)
+    if value < 0 or value > 100:
+        return None
+    return value",clean
+"if 'answer' not in st.session_state:
+    st.session_state.answer = random.randint(0, 100)
+answer = st.session_state.answer",clean
+"def check_guess(value, number):
+    if value == number:
+        return 'Win'
+    if value > number:
+        return 'Too High'
+    return 'Too Low'",clean
+"def parse_value(raw):
+    value = int(raw)
+    if value < 1 or value > 10:
+        return None
+    return value",clean
