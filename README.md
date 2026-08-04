@@ -64,8 +64,6 @@ python3 -m streamlit run investigator.py
 python3 -m pytest
 ```
 
-The original debugging game is still runnable on its own: `python3 -m streamlit run app.py`.
-
 ---
 
 ## Sample Interactions

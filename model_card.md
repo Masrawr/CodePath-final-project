@@ -64,76 +64,54 @@ state_bug          [0, 0, 0, 0, 0, 16]
 
 ## 3. How the AI Makes Decisions
 
-*Explain, in plain language, the path from input to output: input is screened by
-guardrails, relevant bug patterns are retrieved, Gemini reasons over code + patterns to
-produce findings, the specialized classifier independently tags the snippet's category,
-and the verifier confirms a fix by re-running the detector on the corrected code. Note where
-the two models can disagree and how that disagreement is surfaced to the user.*
+Submitted code is screened by the guardrails, then the retriever pulls relevant bug-pattern
+cards and Gemini reasons over the code plus those patterns to produce a structured report
+(line, category, explanation, fix), while the specialized classifier independently tags the
+snippet's category and the verifier confirms each fix by re-running the detector. Because the
+two models decide independently, they can disagree — so the app shows the classifier's
+prediction next to the detector's findings and flags any mismatch for the user to review.
 
 ---
 
-## 4. Responsible-AI Reflection *(graded)*
-
-> ✍️ This is a draft grounded in what actually happened while building the project.
-> Read it over and adjust the wording so it reflects your own voice.
+## 4. Responsible-AI Reflection
 
 ### Limitations and Biases
 
-The biggest limitation is scope: the system only handles **short Python snippets**, not
-whole files or projects, and it only knows the **six bug types** it was built around. The
-specialized classifier is trained on **480 synthetic snippets** created by injecting known
-bugs into clean code, so it learned those templated shapes rather than the messiness of
-real-world bugs — a built-in bias toward the patterns I anticipated. This shows up clearly
-in its weakest class: it correctly labels only half of the `clean` snippets, because a
-correct comparison and an inverted one differ by a single operator that bag-of-words
-features can't see. The Gemini detector can also **hallucinate** a bug or a fix, and my
-knowledge base is only five hand-written pattern cards, so retrieval is limited to the
-categories I thought of. Finally, the reliability scores in §5 come from in-distribution
-synthetic data, so they almost certainly **overstate** how well the system would do on
-arbitrary code.
+The system only handles **short Python snippets** and only knows the **six bug types** it was
+built around, and its classifier is trained on **synthetic** injected examples — a built-in
+bias toward the patterns I anticipated, which is why it confuses `clean` code with a
+near-identical buggy version. Gemini can also **hallucinate** a bug or a fix, so the perfect
+reliability scores in §5 (measured on in-distribution synthetic data) almost certainly
+**overstate** how well the system would do on messy, real-world code.
 
 ### Potential for Misuse and Safeguards
 
-The most realistic misuse is someone **trusting a suggested fix blindly** and shipping
-broken code, since the AI sounds confident even when it's wrong. There is also a privacy
-risk: pasted code is sent to the **Gemini API**, so a user could leak secrets or
-proprietary code, and someone could try **prompt injection** to make the model ignore its
-instructions. To reduce these risks I built several guardrails: input is screened and
-**prompt-injection attempts and non-Python text are rejected** before the AI ever sees
-them; the verifier includes a **syntax check** so a "fix" that breaks the code is never
-reported as successful; and the UI shows explanations, a confidence score, and a
-**classifier-vs-detector cross-check** so disagreement is visible instead of hidden behind
-one answer. Going forward I would keep a clear warning not to paste secrets, never
-auto-apply a fix without human confirmation, and label the tool as a **learning aid, not a
-security auditor**.
+The main risks are a user **trusting a wrong fix blindly**, **leaking secrets** by pasting
+code to the Gemini API, or attempting **prompt injection** to override the model. To prevent
+these, the app rejects injection attempts and non-Python input, uses a **syntax check** so a
+code-breaking "fix" is never reported as successful, and shows explanations, confidence, and
+a **classifier-vs-detector cross-check** so disagreement stays visible — and it should be
+treated as a **learning aid, not a security auditor**.
 
 ### What Surprised Me While Testing Reliability
 
-The most surprising result was that the detector scored **1.00 precision and recall** on my
-evaluation set — and realizing *why* was the real lesson: my test snippets were synthetic
-and textbook-clean, so a perfect score said more about how easy my test set was than about
-how good the system is. I was also surprised that the classifier, at 90% overall, could be
-fooled by code that differs from a bug by **one character** — it made me appreciate how
-shallow bag-of-words features really are. The other surprise was non-technical: the
-**free-tier API limits**. Several model names failed outright, one was capped at 20 requests
-per day, and another had zero free quota, which taught me that a system's reliability
-depends on **external constraints I don't control**, not just my own code.
+The detector's **1.00 precision and recall** surprised me until I realized why — my test
+snippets were synthetic and textbook-clean, so the perfect score reflected an easy test set
+more than a great system, and the classifier could still be fooled by code differing from a
+bug by **one character**. I was also surprised how much reliability depended on things I
+don't control: the **free-tier API limits**, where several models failed outright or had
+zero quota, not just on my own code.
 
 ### Collaborating with AI (one helpful, one flawed suggestion)
 
-I used **Claude Code** as a pair-programmer to design and build the pipeline, and **Google
-Gemini** as the runtime bug detector inside the app; I made the design decisions and
-reviewed and ran everything it produced rather than trusting it blindly. **One helpful
-suggestion:** while generating the training data, the AI pointed out that the auto-created
-`clean` examples were dominated by a single scenario, so the classifier would never see
-correct Streamlit or button code — it rebalanced the generator, and I verified the fix by
-checking the class-diversity counts and the resulting **90% test accuracy**. **One flawed
-suggestion:** the AI confidently defaulted the detector to three different Gemini model
-names in a row (`gemini-2.5-flash`, then `gemini-flash-latest`, then `gemini-2.0-flash`),
-and **every one failed at runtime** — a retired model, a 20-per-day cap, and a zero-quota
-model. I only caught this by actually running the code and reading the 404 and 429 errors,
-then listing the models my key could really call and switching to `gemini-flash-lite-latest`.
-The lesson stuck with me: a confident AI default is a hypothesis to test, not a fact to trust.
+I used **Claude Code** to design and build the pipeline and **Gemini** as the runtime
+detector, reviewing and running everything rather than trusting it blindly. **One helpful
+suggestion:** the AI caught that my auto-generated `clean` training examples were dominated
+by one scenario and rebalanced them, which I verified through the resulting **90% test
+accuracy**. **One flawed suggestion:** it confidently defaulted the detector to three Gemini
+models in a row that all **failed at runtime** (retired / rate-capped / zero-quota) — I only
+caught it by running the code and reading the errors, proving that a confident AI default is
+a hypothesis to test, not a fact to trust.
 
 ---
 
@@ -155,12 +133,10 @@ The lesson stuck with me: a confident AI default is a hypothesis to test, not a 
 | Run-to-run consistency | **2/2 snippets 100% stable** over 3 runs each |
 | Classifier vs. detector agreement | **11/12 = 0.92** |
 
-- **Caveat on the perfect scores:** the eval snippets are *synthetic* — short, textbook
-  examples produced by the same bug-injection process as the training data — so they are
-  easier than messy real-world code. The 1.00 precision/recall shows the pipeline works on
-  in-distribution inputs, **not** that it is flawless on arbitrary code. The one
-  classifier/detector disagreement (11/12) is the expected `clean`-vs-buggy confusion noted
-  in §2. A larger, more realistic eval set is the obvious next step.
+- **Caveat on the perfect scores:** the eval snippets are *synthetic* (same bug-injection
+  process as training), so 1.00 precision/recall shows the pipeline works on in-distribution
+  inputs, **not** that it is flawless on real code. The lone disagreement (11/12) is the
+  expected `clean`-vs-buggy confusion from §2. A larger, real-world eval set is the next step.
 
 ---
 
