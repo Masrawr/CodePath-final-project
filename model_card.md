@@ -74,25 +74,65 @@ the two models can disagree and how that disagreement is surfaced to the user.*
 
 ## 4. Responsible-AI Reflection *(graded)*
 
+> ✍️ **Write this section in your own words.** The bullet points below are factual
+> reminders of what actually happened while building this project — use them as evidence
+> to draw from, then delete them and replace each subsection with 3–5 sentences in your
+> own voice. Graders are looking for *your* thinking, not a list.
+
 ### How I collaborated with AI
 *Which AI tools you used, how you divided work between yourself and the AI, and how you
 stayed the "charioteer" — verifying rather than blindly accepting output.*
 
+Facts you can draw from:
+- I used **Claude Code** as a pair-programmer to design and build the pipeline, and
+  **Google Gemini** (`gemini-flash-lite-latest`) as the runtime bug detector *inside* the app.
+- I made the design decisions (chose the debugging-assistant idea, the specialized-model
+  advanced feature, and — when the transformer plan got too heavy — the switch to a lighter
+  scikit-learn model); the AI drafted code and I reviewed/ran it.
+- I verified rather than trusted: I ran the code and tests after each step instead of
+  assuming the AI's output was correct (see the two examples below).
+- *(Add: how it felt, what you'd do differently, how this compares to Module 1 where you
+  debugged AI-written code by hand.)*
+
 ### One helpful AI suggestion
-*Describe a specific AI suggestion that was correct/useful, and exactly how you verified
-it (a test you ran, code you checked, output you compared).*
+*Describe a specific AI suggestion that was correct/useful, and exactly how you verified it.*
+
+Facts you can draw from (pick ONE and write it up):
+- **Balanced training data.** The AI flagged that the auto-generated `clean` examples were
+  dominated by one scenario, so the classifier would never see correct Streamlit/button code.
+  It rebalanced the generator; I verified by checking the class-diversity counts and by the
+  final **90% test accuracy** with a confusion matrix.
+- **Retrieval sanity check.** The AI proposed a recall test for the retriever; running it
+  showed `missing_validation` ranked 2nd (not 1st) but still inside the top-3 — so I verified
+  the RAG step was good enough *and* learned its limitation, rather than assuming.
 
 ### One flawed or misleading AI suggestion
 *Describe a specific AI suggestion that was wrong or misleading, how you caught it, and
 what you did instead.*
 
+Facts you can draw from (pick ONE and write it up):
+- **Wrong model names.** The AI first defaulted the detector to `gemini-2.5-flash`, then
+  `gemini-flash-latest`, then `gemini-2.0-flash` — each **failed at runtime** (model retired
+  for new keys / 20-per-day cap / zero free quota). I caught this only by *running it* and
+  reading the 404/429 errors, then listed the models my key could actually call and switched
+  to `gemini-flash-lite-latest`. Lesson: the AI's confident default wasn't checked against my
+  real API access.
+- **Docs that didn't match the build.** Early docs described the verifier as "re-running
+  `pytest`," but what got built was a re-detection check. I caught the mismatch reviewing the
+  files and corrected the README, model card, and diagram to describe the system honestly.
+
 ### System limitations
-*Be honest about what this system cannot do: e.g., it only handles short Python snippets;
-the classifier is trained on a small, synthetic injected dataset (six bug types) so it may
-not generalize to real-world or unseen bugs, and it confuses clean code with near-identical
-buggy code; Gemini can hallucinate a bug or a fix; the verifier re-runs the detector rather
-than executing tests, so it is the model checking its own work and cannot prove runtime
-correctness; it is not a security tool.*
+*Be honest about what this system cannot do:*
+- It only handles **short Python snippets**, not whole projects.
+- The classifier is trained on a **small, synthetic dataset** (six injected bug types), so it
+  may not generalize to real-world or unseen bugs, and it confuses `clean` code with a
+  near-identical buggy version (see §2).
+- **Gemini can hallucinate** a bug or a fix; the detector's perfect eval scores are on
+  in-distribution synthetic snippets, not arbitrary code.
+- The **verifier re-runs the detector rather than executing tests**, so it is the model
+  checking its own work and cannot prove runtime correctness.
+- It is **not a security tool** and should not be trusted for auditing untrusted code.
+- *(Add any limitation you noticed yourself while testing.)*
 
 ---
 
