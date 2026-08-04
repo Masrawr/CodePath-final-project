@@ -224,4 +224,8 @@ Live Gemini run (`gemini-flash-lite-latest`, 12 held-out snippets, throttled to 
 
 Building this taught me to treat AI as one component in a checked pipeline rather than a single oracle — retrieval gives it context, a second specialized model challenges it, and a re-detection pass verifies its fixes. The harder part of the problem turned out to be *system design and evaluation*, not the model call itself.
 
+### What this project says about me as an AI engineer
+
+More than any single feature, this project shows that I build AI systems I can *trust and defend*, not just demos that happen to work. I treated the language model as one fallible component and wrapped it in guardrails, a second specialized model, verification, and structured evaluation — then reported the results honestly, including where the scores are inflated and where the system fails. I made deliberate engineering trade-offs (a lightweight scikit-learn model over a heavier transformer, re-detection over full test execution) and, when the AI confidently handed me wrong answers, I caught them by *running the code and reading the errors* rather than trusting the output. That combination — skepticism, verification, and honest documentation — is the kind of AI engineer I want to be.
+
 > 📄 My full graded responsible-AI reflection — how I collaborated with AI, one helpful and one flawed AI suggestion, and the system's limitations — lives in [model_card.md](model_card.md).
