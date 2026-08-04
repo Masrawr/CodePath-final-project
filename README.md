@@ -68,7 +68,7 @@ python3 -m pytest
 
 ## Sample Interactions
 
-> These show the system's expected inputs and outputs. Each targets one real bug from the original game.
+> Illustrative walkthrough of the intended UX. For **real captured command output**, see the [Reproducible Execution Evidence](#reproducible-execution-evidence) section below.
 
 **Example 1 — State bug (Streamlit rerun)**
 
@@ -83,7 +83,7 @@ secret = random.randint(low, high)   # reassigned every rerun
 Line 3 · category: state_bug (classifier confidence 0.94)
 The secret is regenerated on every Streamlit rerun, so the game is unwinnable.
 Suggested fix: read the stored value — `secret = st.session_state.secret`.
-Verify: ✅ fix applied, pytest re-run passes.
+Verify: ✅ re-detection confirms the bug is gone.
 ```
 
 **Example 2 — Inverted hint logic**
@@ -99,7 +99,7 @@ return "Too High"
 Line 1-3 · category: logic_inverted (classifier confidence 0.89)
 The higher/lower branches are swapped; a too-high guess is told to go lower.
 Suggested fix: `guess > secret -> "Too High"`, else "Too Low".
-Verify: ✅ fix applied, pytest re-run passes.
+Verify: ✅ re-detection confirms the bug is gone.
 ```
 
 **Example 3 — Guardrail rejection**
@@ -110,6 +110,94 @@ Verify: ✅ fix applied, pytest re-run passes.
 ⛔ Input rejected: this does not look like Python code and contains an
 instruction-override attempt. No analysis performed.
 ```
+
+---
+
+## Reproducible Execution Evidence
+
+Real command output so the system can be graded without a video. Everything below
+except the Gemini reliability run needs **no API key**; reproduce with the commands shown.
+
+### 1. Run the test suite — `python3 -m pytest`
+
+```
+....s                                                                    [100%]
+4 passed, 1 skipped in 0.01s
+```
+*(4 guardrail tests pass; the API-dependent detection test is skipped when no key is set.)*
+
+### 2. Guardrail results — `python3 src/guardrails.py`
+
+```
+valid function   ok=True
+valid fragment   ok=True
+empty            ok=False Please paste some Python code to analyze.
+prose            ok=False This does not look like Python code.
+injection        ok=False Input rejected: this looks like an instruction-override attempt, not code to analyze.
+```
+
+### 3. Example input → retrieval + classifier (specialized model)
+
+Command:
+```bash
+python3 -c "from src.retriever import retrieve; from src.classifier import classify; \
+code='def check_guess(guess, secret):\n    if guess > secret:\n        return \"Too Low\"\n    return \"Too High\"'; \
+print(retrieve(code,1)[0].splitlines()[0]); print(classify(code))"
+```
+Input / output:
+```
+INPUT:
+def check_guess(guess, secret):
+    if guess > secret:
+        return "Too Low"
+    return "Too High"
+RETRIEVED PATTERN: Inverted higher/lower logic (logic_inverted)
+CLASSIFIER: logic_inverted (64% confidence)
+```
+
+### 4. Train the specialized classifier — `python3 src/train_classifier.py`
+
+```
+Loaded 480 labeled snippets.
+
+=== Test-set report ===
+                    precision    recall  f1-score   support
+             clean       0.80      0.50      0.62        16
+      dead_control       1.00      1.00      1.00        16
+    logic_inverted       0.78      0.88      0.82        16
+missing_validation       1.00      1.00      1.00        16
+        off_by_one       0.80      1.00      0.89        16
+         state_bug       1.00      1.00      1.00        16
+          accuracy                           0.90        96
+Confusion matrix (rows=true, cols=pred):
+labels: ['clean', 'dead_control', 'logic_inverted', 'missing_validation', 'off_by_one', 'state_bug']
+  clean              [8, 0, 4, 0, 4, 0]
+  dead_control       [0, 16, 0, 0, 0, 0]
+  logic_inverted     [2, 0, 14, 0, 0, 0]
+  missing_validation [0, 0, 0, 16, 0, 0]
+  off_by_one         [0, 0, 0, 0, 16, 0]
+  state_bug          [0, 0, 0, 0, 0, 16]
+```
+
+### 5. Reliability experiments — `python3 tests/test_reliability.py`
+
+Live Gemini run (`gemini-flash-lite-latest`, 12 held-out snippets, throttled to the free-tier limit):
+```
+=== Detection accuracy ===
+  TP=10 FP=0 FN=0 TN=2
+  precision (bug present) : 1.00
+  recall    (bug present) : 1.00
+  category accuracy       : 1.00 (10/10)
+
+=== Run-to-run consistency ===
+  snippet 1: ['logic_inverted', 'logic_inverted', 'logic_inverted'] -> 100% agree on 'logic_inverted'
+  snippet 2: ['logic_inverted', 'logic_inverted', 'logic_inverted'] -> 100% agree on 'logic_inverted'
+  fully-stable snippets: 2/2
+
+=== Classifier vs detector agreement ===
+  agreement: 11/12 = 0.92
+```
+*(These scores are on synthetic, in-distribution snippets — see the caveat in `model_card.md` §5.)*
 
 ---
 
