@@ -98,12 +98,28 @@ correctness; it is not a security tool.*
 
 ## 5. Guardrails & Reliability
 
-- **Input guardrails:** rejects empty input, non-Python text, and prompt-injection attempts.
-- **Output checks:** the verifier grounds suggested fixes in real test execution; a human
-  reviews final findings before acting on them.
-- **Reliability experiments** (`tests/test_reliability.py`): detection precision/recall,
-  Gemini-vs-classifier agreement, run-to-run consistency, and guardrail tests.
-  *Fill in results once run.*
+- **Input guardrails:** rejects empty input, non-Python text, and prompt-injection attempts
+  (4 guardrail tests pass in `tests/test_reliability.py`).
+- **Output checks:** the verifier re-runs the detector on the fixed code (with a syntax
+  guard) before a fix is reported as successful; a human reviews final findings.
+- **Reliability experiments** (`python3 tests/test_reliability.py`, model
+  `gemini-flash-lite-latest`, 12 held-out snippets = 2 per class, detection throttled to the
+  free-tier rate limit):
+
+| Experiment | Result |
+|---|---|
+| Detection precision (bug present) | **1.00** (TP=10, FP=0) |
+| Detection recall (bug present) | **1.00** (FN=0) |
+| Category accuracy (correct bug type) | **1.00** (10/10) |
+| Run-to-run consistency | **2/2 snippets 100% stable** over 3 runs each |
+| Classifier vs. detector agreement | **11/12 = 0.92** |
+
+- **Caveat on the perfect scores:** the eval snippets are *synthetic* — short, textbook
+  examples produced by the same bug-injection process as the training data — so they are
+  easier than messy real-world code. The 1.00 precision/recall shows the pipeline works on
+  in-distribution inputs, **not** that it is flawless on arbitrary code. The one
+  classifier/detector disagreement (11/12) is the expected `clean`-vs-buggy confusion noted
+  in §2. A larger, more realistic eval set is the obvious next step.
 
 ---
 
@@ -112,5 +128,5 @@ correctness; it is not a security tool.*
 - **Over-trust risk:** users might apply a suggested fix without understanding it; the UI
   presents explanations and confidence, and requires human review.
 - **False confidence:** a wrong-but-confident finding could mislead a beginner — mitigated
-  by showing model disagreement and verifying fixes against tests.
+  by showing model disagreement and verifying fixes by re-detection.
 - **Data & privacy:** pasted code is sent to the Gemini API; users should not paste secrets.

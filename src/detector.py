@@ -6,7 +6,7 @@ returns a STRUCTURED bug report (validated JSON), not free-form prose.
 
 Configuration (environment variables):
     GEMINI_API_KEY   required to make a live call
-    GEMINI_MODEL     optional, defaults to "gemini-2.5-flash"
+    GEMINI_MODEL     optional, defaults to "gemini-flash-lite-latest"
 
 The heavy SDK import and the API-key check happen lazily, so the rest of the app
 (and offline tests of `_parse_findings`) work without the key or the library.
@@ -16,7 +16,7 @@ import json
 import os
 import re
 
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
 
 CATEGORIES = [
     "state_bug",

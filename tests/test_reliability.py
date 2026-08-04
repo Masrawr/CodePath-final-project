@@ -17,6 +17,7 @@ Two layers:
 import csv
 import os
 import sys
+import time
 from collections import Counter, defaultdict
 
 import pytest
@@ -33,7 +34,11 @@ BUGS_CSV = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "bug
 # Keep API usage modest — this many buggy + clean snippets per category.
 SAMPLES_PER_CLASS = 2
 CONSISTENCY_RUNS = 3
-CONSISTENCY_SNIPPETS = 3
+CONSISTENCY_SNIPPETS = 2
+
+# The free tier allows ~5 requests/minute. Space calls out to stay under that;
+# override with GEMINI_MIN_INTERVAL=0 if you have a paid quota.
+MIN_INTERVAL = float(os.environ.get("GEMINI_MIN_INTERVAL", "13"))
 
 HAS_KEY = bool(os.environ.get("GEMINI_API_KEY"))
 needs_key = pytest.mark.skipif(not HAS_KEY, reason="GEMINI_API_KEY not set")
@@ -50,9 +55,30 @@ def _load_eval_set(per_class=SAMPLES_PER_CLASS):
     return {label: snips[:per_class] for label, snips in by_label.items()}
 
 
+_last_call = [0.0]
+
+
+def _throttle():
+    """Sleep so consecutive API calls stay under the free-tier rate limit."""
+    if MIN_INTERVAL <= 0:
+        return
+    elapsed = time.time() - _last_call[0]
+    if elapsed < MIN_INTERVAL:
+        wait = MIN_INTERVAL - elapsed
+        print(f"    (throttle: waiting {wait:.0f}s for free-tier 5 req/min)", flush=True)
+        time.sleep(wait)
+    _last_call[0] = time.time()
+
+
 def _detect(code):
-    """Run the full retrieve->detect step for one snippet."""
+    """Run the full retrieve->detect step for one snippet (rate-limited)."""
+    _throttle()
     return detect_bugs(code, retrieve(code, k=3))
+
+
+def _top_category(findings):
+    """The detector's headline category for a snippet ('clean' if none)."""
+    return findings[0]["category"] if findings else "clean"
 
 
 def _flagged_buggy(findings):
@@ -98,12 +124,19 @@ def test_detection_recall_on_known_bugs():
 # --- Experiment harness (python3 tests/test_reliability.py) ------------------
 
 def run_detection_experiment(eval_set):
+    """Measure detection accuracy and return per-snippet records for reuse."""
     tp = fp = fn = tn = 0
     cat_correct = cat_total = 0
+    total = sum(len(v) for v in eval_set.values())
+    done = 0
+    records = []  # (true_label, code, detector_top_category)
     for label, snippets in eval_set.items():
         for code in snippets:
+            done += 1
+            print(f"  [detect {done}/{total}] {label}…", flush=True)
             findings = _detect(code)
             flagged = _flagged_buggy(findings)
+            records.append((label, code, _top_category(findings)))
             if label == "clean":
                 fp += flagged
                 tn += not flagged
@@ -111,8 +144,7 @@ def run_detection_experiment(eval_set):
                 tp += flagged
                 fn += not flagged
                 cat_total += 1
-                top = findings[0]["category"] if findings else None
-                cat_correct += (top == label)
+                cat_correct += (_top_category(findings) == label)
     precision = tp / (tp + fp) if (tp + fp) else 0.0
     recall = tp / (tp + fn) if (tp + fn) else 0.0
     cat_acc = cat_correct / cat_total if cat_total else 0.0
@@ -121,6 +153,7 @@ def run_detection_experiment(eval_set):
     print(f"  precision (bug present) : {precision:.2f}")
     print(f"  recall    (bug present) : {recall:.2f}")
     print(f"  category accuracy       : {cat_acc:.2f} ({cat_correct}/{cat_total})")
+    return records
 
 
 def run_consistency_experiment(eval_set):
@@ -130,7 +163,8 @@ def run_consistency_experiment(eval_set):
     stable = 0
     for i, code in enumerate(buggy, 1):
         top_cats = []
-        for _ in range(CONSISTENCY_RUNS):
+        for r in range(CONSISTENCY_RUNS):
+            print(f"  [consistency snippet {i}/{len(buggy)} run {r + 1}/{CONSISTENCY_RUNS}]…", flush=True)
             findings = _detect(code)
             top_cats.append(findings[0]["category"] if findings else "none")
         modal, count = Counter(top_cats).most_common(1)[0]
@@ -140,26 +174,23 @@ def run_consistency_experiment(eval_set):
     print(f"  fully-stable snippets: {stable}/{len(buggy)}")
 
 
-def run_agreement_experiment(eval_set):
+def run_agreement_experiment(records):
+    """Compare the local classifier with the detector — reuses records, no API."""
     print("\n=== Classifier vs detector agreement ===")
     try:
         from src.classifier import classify, ModelNotTrainedError
     except Exception as e:  # noqa: BLE001
         print(f"  skipped (classifier import failed: {e})")
         return
-    pairs = 0
-    agree = 0
-    for label, snippets in eval_set.items():
-        for code in snippets:
-            try:
-                clf, _ = classify(code)
-            except ModelNotTrainedError:
-                print("  skipped (no fine-tuned model in model/ yet)")
-                return
-            findings = _detect(code)
-            det = findings[0]["category"] if findings else "clean"
-            pairs += 1
-            agree += (clf == det)
+    pairs = agree = 0
+    for _label, code, det in records:
+        try:
+            clf, _ = classify(code)
+        except ModelNotTrainedError:
+            print("  skipped (no trained model in model/ yet)")
+            return
+        pairs += 1
+        agree += (clf == det)
     print(f"  agreement: {agree}/{pairs} = {agree / pairs:.2f}" if pairs else "  no pairs")
 
 
@@ -170,10 +201,13 @@ def main():
         return
     eval_set = _load_eval_set()
     n = sum(len(v) for v in eval_set.values())
+    calls = n + CONSISTENCY_SNIPPETS * CONSISTENCY_RUNS
     print(f"Loaded {n} eval snippets ({SAMPLES_PER_CLASS} per class).")
-    run_detection_experiment(eval_set)
+    print(f"~{calls} Gemini calls, throttled to ~5/min "
+          f"(≈{calls * MIN_INTERVAL / 60:.0f} min). Progress below:\n", flush=True)
+    records = run_detection_experiment(eval_set)
     run_consistency_experiment(eval_set)
-    run_agreement_experiment(eval_set)
+    run_agreement_experiment(records)  # reuses detection results (no extra calls)
 
 
 if __name__ == "__main__":

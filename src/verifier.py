@@ -16,7 +16,7 @@ import ast
 import os
 import re
 
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-lite-latest")
 
 _REWRITE_SYSTEM = (
     "You are a precise code editor. Apply ONLY the requested fix to the code. "
