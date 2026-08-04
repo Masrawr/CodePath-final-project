@@ -10,7 +10,7 @@ This final project (below) evolves that exercise into a full applied AI system.
 
 **An AI code-debugging assistant that finds, classifies, explains, and verifies fixes for bugs in Python code.**
 
-> **Project status:** 🚧 In active development. The architecture, knowledge base, and modular skeleton are complete; the AI pipeline is being implemented module by module. Sample interactions below show the system's intended behavior.
+> **Project status:** ✅ Working end to end. Guardrails, RAG retrieval, the specialized classifier (90% test accuracy), the Gemini detector, and the re-detection verifier are all implemented and wired into the Streamlit app. See the reliability results below and in `model_card.md`.
 
 ---
 
