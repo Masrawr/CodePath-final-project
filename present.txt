@@ -1,0 +1,261 @@
+================================================================
+GLITCH INVESTIGATOR AI — 5-MINUTE PRESENTATION SCRIPT
+================================================================
+Timings are cumulative. Top-level bullets = say these out loud.
+Sub-bullets = supporting detail / only if you have room.
+
+
+----------------------------------------------------------------
+[0:00 - 0:35]  THE HOOK: WHERE IT CAME FROM
+----------------------------------------------------------------
+• My Module 1 project was "Game Glitch Investigator" — a Streamlit
+  number-guessing game deliberately packed with bugs. The secret
+  number reset on every click, the higher/lower hints were inverted,
+  out-of-range guesses were accepted, and the "New Game" button did
+  nothing. My job was to find and fix them by hand, using AI as a
+  debugging teammate.
+
+• This final project flips that exercise around. Instead of *me*
+  debugging with AI's help, THE AI DOES THE INVESTIGATING — and the
+  buggy game is now the demo input, not the deliverable.
+
+• One line: an AI code-debugging assistant that finds, classifies,
+  explains, and then verifies its own fixes for bugs in Python.
+
+
+----------------------------------------------------------------
+[0:35 - 1:15]  WHAT IT ACTUALLY DOES
+----------------------------------------------------------------
+• You paste a Python snippet into a Streamlit app and hit
+  "Investigate." You get back a structured bug report — not prose.
+  Every finding has four fields: line number, bug category,
+  plain-English explanation, and a concrete suggested fix.
+
+• Alongside it, a second independent model gives its own category
+  guess with a confidence score, and the app tells you when the two
+  models DISAGREE instead of hiding it.
+
+• Then, optionally, it applies each fix and re-checks whether the bug
+  actually went away.
+
+• It knows six categories: state_bug, logic_inverted,
+  missing_validation, off_by_one, dead_control, and clean.
+  (These are exactly the bug families from the original game.)
+
+
+----------------------------------------------------------------
+[1:15 - 2:30]  HOW IT DOES IT — FIVE STAGES
+----------------------------------------------------------------
+Say: "It's a pipeline, not a single model call. Five stages."
+
+1. GUARDRAILS (src/guardrails.py)
+   Screens input *before* anything reaches the AI. Rejects empty
+   input, anything over 20,000 characters, prompt-injection attempts,
+   and text that isn't Python. Python detection tries a real
+   `ast.parse` first, then falls back to a keyword heuristic so valid
+   *fragments* still get through.
+
+2. RETRIEVER — RAG (src/retriever.py)
+   A hand-written knowledge base of bug-pattern "cards" in
+   kb/bug_patterns.md. It tokenizes the code — splitting identifiers,
+   so `st.session_state` becomes `st, session, state` — and pulls the
+   top-k most similar cards by TF-IDF cosine similarity. So the model
+   reasons WITH concrete prior knowledge instead of guessing.
+   - It auto-upgrades to sentence-transformers embeddings if that
+     library happens to be installed. Pure-Python TF-IDF otherwise.
+
+3. DETECTOR — GEMINI (src/detector.py)
+   Sends the code plus the retrieved patterns to Gemini at
+   temperature 0 with a JSON response type. Critically, the output is
+   VALIDATED, NOT TRUSTED: `_parse_findings` strips markdown fences,
+   digs the JSON array out of any stray prose, and drops any finding
+   whose category isn't in the allowed list. A malformed response
+   degrades to an empty list, never a crash.
+
+4. CLASSIFIER — THE SPECIALIZED MODEL (src/classifier.py)
+   A local scikit-learn TF-IDF + LogisticRegression model, trained on
+   480 labeled snippets I generated myself. It independently tags the
+   snippet's category. Runs inside the app — no GPU, no API call.
+   90% accuracy on a held-out test set.
+
+5. VERIFIER — THE AGENTIC SELF-CHECK (src/verifier.py)
+   Asks the model to apply the suggested fix, syntax-checks the result
+   with `ast.parse` so a fix that breaks the code can never be
+   reported as a success, then RE-RUNS THE DETECTOR on the corrected
+   code. If the bug category is gone, the fix passes.
+
+
+----------------------------------------------------------------
+[2:30 - 3:15]  THE GUARDRAILS FOR EVALUATION
+----------------------------------------------------------------
+Say: "The system is designed so it never trusts a single model pass."
+Four checkpoints, and they're all *measured*:
+
+• INPUT GUARDRAIL — 4 pytest tests, no API key needed. All pass.
+
+• SCHEMA VALIDATION — unknown categories and unparseable JSON are
+  silently discarded at the detector boundary.
+
+• CROSS-MODEL CHECK — the local classifier is a second, cheap,
+  specialized opinion on the general LLM's confident answer.
+  Measured agreement: 11/12 = 0.92.
+
+• SELF-VERIFICATION — syntax guard + re-detection before a fix is
+  ever called "verified."
+
+• HUMAN REVIEW — the final node in the architecture diagram. The UI
+  shows explanations and confidence so a person decides.
+
+Live reliability numbers (tests/test_reliability.py, 12 held-out
+snippets, throttled to the free-tier 5 req/min):
+  - Detection precision 1.00 (TP=10, FP=0)
+  - Detection recall 1.00 (FN=0)
+  - Category accuracy 1.00 (10/10)
+  - Run-to-run consistency: 2/2 snippets fully stable over 3 runs
+  - Classifier accuracy 90%, macro F1 0.89
+
+>>> IMPORTANT — say this yourself before anyone asks:
+    "Those 1.00s are not a brag, they're a warning sign. My eval
+    snippets are synthetic and in-distribution — same bug-injection
+    process as training. A perfect score there means the pipeline
+    works, not that the system is flawless on real code."
+
+
+----------------------------------------------------------------
+[3:15 - 4:00]  WHAT I PRIORITIZED, AND WHAT I TRADED AWAY
+----------------------------------------------------------------
+• VERIFIABILITY OVER CAPABILITY. Every design call favored something
+  I could explain, test, and defend over something more powerful I
+  couldn't.
+
+• A small curated KB over a big scraped corpus. Five auditable cards.
+  Traded breadth for trustworthiness.
+
+• TF-IDF + LogisticRegression over a DistilBERT fine-tune. That was
+  the original plan. A linear model trains in seconds on any laptop,
+  runs in the app with no GPU, and its confusion matrix is
+  explainable. Traded raw accuracy for transparency and
+  reproducibility.
+
+• TWO MODELS ON PURPOSE. Gemini finds bugs broadly; the classifier
+  categorizes precisely. Comparing them SURFACES DISAGREEMENT rather
+  than laundering it into one confident answer.
+
+• Re-detection over the model grading itself. I never ask the LLM
+  "did that work?" I re-run the detector and check. Weaker than
+  executing tests, but grounded in something outside the fix.
+
+• Synthetic data by INJECTION, not hand-labeling. Because I control
+  the injection, every one of the 480 labels is exact. Fast, honest,
+  controlled — and it seeds the eval set too.
+
+• Graceful degradation everywhere. No API key? Guardrails, retrieval,
+  and the classifier still run. Lazy imports mean the Gemini SDK is
+  only needed for a live call.
+
+
+----------------------------------------------------------------
+[4:00 - 4:45]  THE FLAWS — STATED PLAINLY
+----------------------------------------------------------------
+Say: "Here's where it breaks, and I'd rather tell you than have you
+find it."
+
+1. SYNTHETIC EVALUATION INFLATES EVERY SCORE. 12 eval snippets.
+   Consistency measured on 2 snippets. That's a smoke test, not a
+   benchmark. A real-world eval set is the honest next step.
+
+2. THE CLASSIFIER CAN'T RELIABLY TELL CLEAN CODE FROM BUGGY CODE.
+   `clean` recall is 0.50 — the weakest class by far. Correct and
+   inverted comparisons differ by a single operator, and bag-of-words
+   features simply don't capture that. A documented limitation of the
+   feature choice, not a bug.
+
+3. THE VERIFIER CHECKS THE CATEGORY, NOT THE BEHAVIOR. If the model
+   re-reports the same real bug under a *different* category,
+   re-detection reads it as fixed. And it never executes the code, so
+   it can't prove runtime correctness.
+
+4. SIX CATEGORIES, SHORT PYTHON SNIPPETS ONLY. Anything outside the
+   taxonomy I anticipated is invisible to the system. Baked-in bias
+   toward the bugs I already knew about.
+
+5. GUARDRAILS ARE REGEX + HEURISTICS. A rephrased injection walks
+   past the pattern list. Real Python that's oddly formatted can get
+   rejected. Both directions of error exist.
+
+6. THE LLM CAN STILL HALLUCINATE a bug or a fix. Retrieval and the
+   cross-check reduce that; nothing eliminates it.
+
+7. PRIVACY AND DEPENDENCY. Pasted code goes to a third-party API, so
+   don't paste secrets — and reliability partly depends on free-tier
+   quota I don't control.
+
+
+----------------------------------------------------------------
+[4:45 - 5:00]  THE CLOSE
+----------------------------------------------------------------
+• The real lesson: THE HARD PART WAS NEVER THE MODEL CALL. It was
+  system design and evaluation.
+
+• What I built is a habit, not just an app — treat the language model
+  as one fallible component, wrap it in guardrails, challenge it with
+  a second specialized model, verify its output, measure the result,
+  and then report the numbers honestly INCLUDING where they're
+  inflated.
+
+• Concrete proof of that: the AI confidently pointed me at three
+  Gemini models in a row that all failed at runtime — retired,
+  rate-capped, zero quota. I only caught it by running the code and
+  reading the errors. A confident AI default is a hypothesis to test,
+  not a fact to trust. That's the engineer I'm trying to be.
+
+
+================================================================
+Q&A PREP — likely questions, and known rough edges
+================================================================
+
+Q: "Why not a transformer / why such a simple model?"
+   -> Deliberate. 480 synthetic samples would overfit a DistilBERT
+      fine-tune, it needs a GPU I don't have, and I couldn't have
+      shown you an explainable confusion matrix. The specialized
+      model's job here is to be a cheap DISAGREEING VOICE, not to win
+      on accuracy.
+
+Q: "Isn't the verifier just the model grading its own homework?"
+   -> Partly, yes, and I say so in the model card. Two things make it
+      more than that: an `ast.parse` syntax gate the LLM can't talk
+      its way past, and the check runs through the *detector* on
+      rewritten code rather than asking the fixer if it succeeded.
+      Executing real tests is the correct next version.
+
+Q: "What would you build next?" — in priority order:
+   1. Swap synthetic eval for real buggy code (GitHub commits/SStuBs).
+   2. Make the verifier run actual tests instead of re-detecting.
+   3. Verify by *behavior*, so a re-labeled bug can't slip through.
+   4. AST features in the classifier so `>` vs `<` is visible to it.
+
+Q: "How do you know the retrieval helps?"
+   -> recall@3 is 100% on the five bug types — the right pattern card
+      is always in the top 3. Caveat: tiny KB, and TF-IDF can
+      mis-*rank* on a shared token even when it retrieves the right
+      card.
+
+--- Small inconsistencies to fix or own if someone spots them ---
+• model_card.md section 1 names `gemini-2.5-flash` with a "confirm
+  exact model id" note; the code actually defaults to
+  `gemini-flash-lite-latest`. Fix the card, or own it.
+• The architecture diagram draws a "not fixed -> retry" arrow back to
+  the detector. `verify_fix` is a single pass with no retry loop —
+  describe it as one verification pass, or say the retry is designed
+  but not implemented.
+• A docstring in investigator.py says "fine-tuned classifier." It's
+  trained from scratch, not fine-tuned. Say "specialized," which is
+  what the README and model card correctly call it.
+• `assets/` is empty — don't point at it.
+
+--- If the live demo fails ---
+The README has a full "Reproducible Execution Evidence" section with
+real captured output: pytest, guardrails, retrieval + classifier, the
+training report and confusion matrix, and the Gemini reliability run.
+Everything except the Gemini run needs no API key. Fall back to that
+and keep talking.
